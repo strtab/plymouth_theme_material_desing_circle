@@ -2,18 +2,18 @@ Material design circle plymouth theme for NixOS.
 
 Based on
 
-- [gevera/plymouth_themes](https://github.com/gevera/plymouth_themes).
-- [m3](https://m3.material.io/components/progress-indicators/specs).
+- [gevera/plymouth-themes](https://github.com/gevera/plymouth_themes)
+- [material design m3 progress indicators](https://m3.material.io/components/progress-indicators/specs)
 
 ## Installation
 
 ```nix
 # flake.nix
-inputs.plymouth-circle.url = "github:you/plymouth-circle";
+inputs.plymouth-circle.url = "github:strtab/plymouth-circle";
 ```
 
 ```nix
-# nixosConfiguration
+# configuraion.nix
 imports = [ inputs.plymouth-circle.nixosModules.default ];
 
 boot.plymouthCircle = {

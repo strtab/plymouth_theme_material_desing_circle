@@ -19,7 +19,9 @@
               mkdir -p $THEME_DIR/images
               cp ${self}/theme.plymouth $THEME_DIR/$THEME_NAME.plymouth
               cp ${self}/theme.script   $THEME_DIR/$THEME_NAME.script
-              cp ${cfg.logo}            $THEME_DIR/images/logo.png
+              cp ${cfg.logo.path}       $THEME_DIR/images/logo.png
+              sed -i 's/^reduction.*/reduction = ${cfg.logo.scale}/' "$THEME_DIR/$THEME_NAME.script"
+
               for i in ${self}/images/*.png; do
                 ffmpeg -i "$i" \
                   -vf "colorchannelmixer=rr=${toString cfg.circle.red}/255:gg=${toString cfg.circle.green}/255:bb=${toString cfg.circle.blue}/255" \
@@ -44,25 +46,32 @@
               red = lib.mkOption {
                 type = lib.types.ints.between 0 255;
                 default = 10;
-                description = "Red channel (0-255).";
+                description = "Red channel (0-255)";
               };
               green = lib.mkOption {
                 type = lib.types.ints.between 0 255;
                 default = 10;
-                description = "Green channel (0-255).";
+                description = "Green channel (0-255)";
               };
               blue = lib.mkOption {
                 type = lib.types.ints.between 0 255;
                 default = 10;
-                description = "Blue channel (0-255).";
+                description = "Blue channel (0-255)";
               };
             };
 
-            logo = lib.mkOption {
-              type = lib.types.path;
-              default = "${self}/images/logo.png";
-              defaultText = lib.literalExpression ''"''${self}/images/logo.png"'';
-              description = "Path to a logo .png for the theme.";
+            logo = {
+              scale = lib.mkOption {
+                type = lib.types.str;
+                default = "0.3";
+                description = "Logo scale";
+              };
+              path = lib.mkOption {
+                type = lib.types.path;
+                default = "${self}/images/logo.png";
+                defaultText = lib.literalExpression ''"''${self}/images/logo.png"'';
+                description = "Path to a logo .png for the theme";
+              };
             };
           };
 
