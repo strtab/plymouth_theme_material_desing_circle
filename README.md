@@ -30,37 +30,41 @@ boot.plymouthCircle = {
 
 ## Options
 
+---
+
 ### `boot.plymouthCircle.enable`
 
 Enable the theme. Default: `false`.
 
-### `boot.plymouthCircle.logo`
+---
+
+### `boot.plymouthCircle.logo.path`
 
 Path to a `.png` file used as the center logo.
 Default: `images/logo.png` from the flake.
+
+---
+
+### `boot.plymouthCircle.logo.scale`
+
+Scale size the center logo.
+Default: `images/logo.png` from the flake.
+
+---
 
 ### `boot.plymouthCircle.circle.red` / `.green` / `.blue`
 
 RGB color of the animated circle. Each channel is an integer from `0` to `255`.
 Default: `10` for all channels.
 
+---
+
 ### `boot.plymouthCircle.circle.wavy`
 
 Use wavy-style circle frames (`wave/`) instead of the default ones (`normal/`).
 Default: `false`.
 
-## Repository layout
-
-```
-.
-├── flake.nix
-├── theme.plymouth
-├── theme.script
-└── images/
-    ├── logo.png
-    ├── normal/   # frames used when wavy = false
-    └── wave/     # frames used when wavy = true
-```
+---
 
 ### Installation on regular linux
 
