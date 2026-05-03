@@ -75,7 +75,7 @@
                         -vf "colorchannelmixer=rr=$red/255:gg=$green/255:bb=$blue/255" \
                         "$THEME_DIR/images/$(basename "$i")"
                     done
-                    ${lib.optionalString lib.mkIf cfg.circle.wavy ''
+                    ${lib.optionalString cfg.circle.wavy ''
                       for i in ${self}/wave/*.png; do
                         ffmpeg -i "$i" \
                           -vf "colorchannelmixer=rr=$red/255:gg=$green/255:bb=$blue/255" \
