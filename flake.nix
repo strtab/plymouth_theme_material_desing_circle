@@ -54,24 +54,31 @@
           config = lib.mkIf cfg.enable (
             let
               plymouthTheme =
-                pkgs.runCommand "plymouth-theme-material-design-circle" { nativeBuildInputs = [ pkgs.ffmpeg ]; }
+                pkgs.runCommand "plymouth-theme-material-design-circle"
+                  {
+                    nativeBuildInputs = [ pkgs.ffmpeg ];
+                    inherit (cfg.circle) red green blue;
+                    wavy = lib.boolToString cfg.circle.wavy;
+                    logo = cfg.logo.path;
+                    scale = cfg.logo.scale;
+                  }
                   ''
                     THEME_NAME="material_design_circle"
                     THEME_DIR="$out/share/plymouth/themes/$THEME_NAME"
                     mkdir -p $THEME_DIR/images
                     cp ${self}/theme.plymouth $THEME_DIR/$THEME_NAME.plymouth
                     cp ${self}/theme.script   $THEME_DIR/$THEME_NAME.script
-                    cp ${cfg.logo.path}       $THEME_DIR/images/logo.png
-                    sed -i 's/^reduction.*/reduction = ${cfg.logo.scale}/' "$THEME_DIR/$THEME_NAME.script"
+                    cp "$logo"                $THEME_DIR/images/logo.png
+                    sed -i "s/^reduction.*/reduction = $scale/" "$THEME_DIR/$THEME_NAME.script"
                     for i in ${self}/images/*.png; do
                       ffmpeg -i "$i" \
-                        -vf "colorchannelmixer=rr=${toString cfg.circle.red}/255:gg=${toString cfg.circle.green}/255:bb=${toString cfg.circle.blue}/255" \
+                        -vf "colorchannelmixer=rr=$red/255:gg=$green/255:bb=$blue/255" \
                         "$THEME_DIR/images/$(basename "$i")"
                     done
                     ${lib.optionalString cfg.circle.wavy ''
                       for i in ${self}/wave/*.png; do
                         ffmpeg -i "$i" \
-                          -vf "colorchannelmixer=rr=${toString cfg.circle.red}/255:gg=${toString cfg.circle.green}/255:bb=${toString cfg.circle.blue}/255" \
+                          -vf "colorchannelmixer=rr=$red/255:gg=$green/255:bb=$blue/255" \
                           "$THEME_DIR/images/$(basename "$i")"
                       done
                     ''}
