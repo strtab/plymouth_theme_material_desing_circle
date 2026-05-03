@@ -11,30 +11,29 @@
         }:
         let
           cfg = config.boot.plymouthCircle;
-
           plymouthTheme =
-            pkgs.runCommand "plymouth-theme-material-design-circle" { nativeBuildInputs = [ pkgs.ffmpeg ]; } ''
-              THEME_NAME="material_design_circle"
-              THEME_DIR="$out/share/plymouth/themes/$THEME_NAME"
-              mkdir -p $THEME_DIR/images
-              cp ${self}/theme.plymouth $THEME_DIR/$THEME_NAME.plymouth
-              cp ${self}/theme.script   $THEME_DIR/$THEME_NAME.script
-              cp ${cfg.logo.path}       $THEME_DIR/images/logo.png
-              sed -i 's/^reduction.*/reduction = ${cfg.logo.scale}/' "$THEME_DIR/$THEME_NAME.script"
-
-              for i in ${self}/images/*.png; do
-                ffmpeg -i "$i" \
-                  -vf "colorchannelmixer=rr=${toString cfg.circle.red}/255:gg=${toString cfg.circle.green}/255:bb=${toString cfg.circle.blue}/255" \
-                  "$THEME_DIR/images/$(basename "$i")"
-              done
-            ''
-            + lib.optionalString cfg.circle.wavy ''
-              for i in ${self}/wave/*.png; do
-                ffmpeg -i "$i" \
-                  -vf "colorchannelmixer=rr=${toString cfg.circle.red}/255:gg=${toString cfg.circle.green}/255:bb=${toString cfg.circle.blue}/255" \
-                  "$THEME_DIR/images/$(basename "$i")"
-              done
-            '';
+            pkgs.runCommand "plymouth-theme-material-design-circle" { nativeBuildInputs = [ pkgs.ffmpeg ]; }
+              ''
+                THEME_NAME="material_design_circle"
+                THEME_DIR="$out/share/plymouth/themes/$THEME_NAME"
+                mkdir -p $THEME_DIR/images
+                cp ${self}/theme.plymouth $THEME_DIR/$THEME_NAME.plymouth
+                cp ${self}/theme.script   $THEME_DIR/$THEME_NAME.script
+                cp ${cfg.logo.path}       $THEME_DIR/images/logo.png
+                sed -i 's/^reduction.*/reduction = ${cfg.logo.scale}/' "$THEME_DIR/$THEME_NAME.script"
+                for i in ${self}/images/*.png; do
+                  ffmpeg -i "$i" \
+                    -vf "colorchannelmixer=rr=${toString cfg.circle.red}/255:gg=${toString cfg.circle.green}/255:bb=${toString cfg.circle.blue}/255" \
+                    "$THEME_DIR/images/$(basename "$i")"
+                done
+                ${lib.optionalString cfg.circle.wavy ''
+                  for i in ${self}/wave/*.png; do
+                    ffmpeg -i "$i" \
+                      -vf "colorchannelmixer=rr=${toString cfg.circle.red}/255:gg=${toString cfg.circle.green}/255:bb=${toString cfg.circle.blue}/255" \
+                      "$THEME_DIR/images/$(basename "$i")"
+                  done
+                ''}
+              '';
         in
         {
           options.boot.plymouthCircle = {
@@ -43,7 +42,7 @@
             circle = {
               wavy = lib.mkEnableOption "wavy style for circle";
 
-              red = lib.mkOption {
+              red = {
                 type = lib.types.ints.between 0 255;
                 default = 10;
                 description = "Red channel (0-255)";
