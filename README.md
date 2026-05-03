@@ -9,7 +9,7 @@ Based on
 
 ```nix
 # flake.nix
-inputs.plymouth-circle.url = "github:strtab/plymouth-circle";
+inputs.plymouth-circle.url = "github:strtab/plymouth_theme_material_desing_circle";
 ```
 
 ```nix
