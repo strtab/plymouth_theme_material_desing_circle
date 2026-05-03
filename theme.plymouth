@@ -1,0 +1,9 @@
+[Plymouth Theme]
+Name=nixos
+Description=A Plymouth theme for NixOS
+ModuleName=script
+
+[script]
+ImageDir=/run/plymouth/themes/material_design_circle/images
+ScriptFile=/run/plymouth/themes/material_design_circle/material_design_circle.script
+ConsoleLogBackgroundColor=0x1a1b26
