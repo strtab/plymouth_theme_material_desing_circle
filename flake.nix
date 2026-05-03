@@ -19,7 +19,7 @@
             circle = {
               wavy = lib.mkEnableOption "wavy style for circle";
 
-              red = {
+              red = lib.mkOption {
                 type = lib.types.ints.between 0 255;
                 default = 10;
                 description = "Red channel (0-255)";
